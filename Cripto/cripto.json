@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "tipo_operacion":"compra",
+        "cripto": "BTC",
+        "precio_usdt": 55000,
+        "cantidad_cripto": 0.0054,
+        "cantidad_usdt": 100,
+        "fecha": "11/08/2024"
+    },
+    {
+        "id": 2,
+        "tipo_operacion":"venta",
+        "cripto": "BTC",
+        "precio_usdt": 58000,
+        "cantidad_cripto": 0.0054,
+        "cantidad_usdt": 50,
+        "fecha": "11/08/2024"
+    }
+]

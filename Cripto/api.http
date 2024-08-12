@@ -1,0 +1,30 @@
+### Recuperar todos las operaciones
+GET http://localhost:8080/criptos
+
+### Recuperar todos las compras
+GET http://localhost:8080/criptos/compras
+
+### Recuperar todos las ventas
+GET http://localhost:8080/criptos/ventas
+
+### Crear una operación de compra
+POST http://localhost:8080/criptos
+Content-Type: application/json
+
+{
+    "id": 3,
+    "tipo_operacion":"compra",
+    "cripto": "ETH",
+    "precio_usdt": 2500,
+    "cantidad_cripto": 0.0054,
+    "cantidad_usdt": 100,
+    "fecha": "11/08/2024"
+}
+
+### Actualizar operación mediante un ID
+PATCH http://localhost:8080/criptos/1
+Content-Type: application/json
+
+{
+  "cantidad_usdt": 2022
+}
