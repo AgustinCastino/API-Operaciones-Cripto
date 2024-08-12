@@ -1,4 +1,5 @@
 import { criptoModel } from "../models/cripto.js"
+import { validarOperacion, validarOperacionParcial} from "../schema/operacion.js"
 
 
 export class criptoController {
@@ -23,8 +24,15 @@ export class criptoController {
     static async crearOperacion(req, res) {
 
         // Todo -  Se debería validar que req.body sea valido para crear una operacion
+
+        const validacion = validarOperacion(req.body)
+
+        if (!validacion.success){
+            return res.status(400).json({ error: JSON.parse(validacion.error.message) })
+        }
         
         const operacionCreada = await criptoModel.crearOperacion(req.body)
+        
         res.json(operacionCreada)
 
     }
@@ -37,7 +45,7 @@ export class criptoController {
         const data = req.body
 
         const operacionActualizada = await criptoModel.actualizarOperacion(id, data)
-        
+
         res.json(operacionActualizada)
 
     }
