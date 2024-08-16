@@ -41,10 +41,13 @@ export class criptoController {
 
         const id = req.params.id
 
-        // Todo - Se deberia validar la data
-        const data = req.body
+        const validacion = validarOperacionParcial(req.body)
 
-        const operacionActualizada = await criptoModel.actualizarOperacion(id, data)
+        if (!validacion.success){
+            return res.status(400).json({ error: JSON.parse(validacion.error.message) })
+        }
+
+        const operacionActualizada = await criptoModel.actualizarOperacion(id, validacion.data)
 
         res.json(operacionActualizada)
 

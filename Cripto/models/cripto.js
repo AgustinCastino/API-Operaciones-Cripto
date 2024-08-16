@@ -44,8 +44,6 @@ export class criptoModel {
     }
 
     static actualizarOperacion( id, data ) {
-        console.log(id);
-
         const indice = criptos.findIndex((operacion) => operacion.id == id);
 
         criptos[indice] = {
