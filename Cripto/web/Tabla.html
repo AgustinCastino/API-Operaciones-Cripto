@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabla Colorida Suave</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f8fa;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      table-layout: fixed; /* Para que las celdas mantengan un ancho fijo */
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: center;
+      font-size: 1rem;
+      font-weight: bold;
+      border: 1px solid #ddd; /* Líneas tenues para separar las celdas */
+    }
+
+    /* Color de fondo suave para las filas */
+    tr.red-row td {
+      background-color: #fdecea; /* Rojo muy claro */
+      color: #a94442;
+    }
+
+    tr.green-row td {
+      background-color: #e8f5e9; /* Verde muy claro */
+      color: #3c763d;
+    }
+
+    /* Encabezados */
+    th {
+      background-color: #333;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    /* Responsividad */
+    @media (max-width: 600px) {
+      table {
+        font-size: 0.8rem;
+      }
+
+      th, td {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Tabla con Filas Suaves</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre de la Cripto</th>
+        <th>Tipo de Operación</th>
+        <th>Precio en USDT</th>
+        <th>Cantidad USDT Pagada</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Todas las filas rojas -->
+      <tr class="red-row">
+        <td>Bitcoin</td>
+        <td>Compra</td>
+        <td>45000</td>
+        <td>1000</td>
+      </tr>
+      <tr class="red-row">
+        <td>Ethereum</td>
+        <td>Venta</td>
+        <td>3000</td>
+        <td>1500</td>
+      </tr>
+      <tr class="red-row">
+        <td>Cardano</td>
+        <td>Compra</td>
+        <td>2.50</td>
+        <td>500</td>
+      </tr>
+      <!-- Todas las filas verdes -->
+      <tr class="green-row">
+        <td>Dogecoin</td>
+        <td>Venta</td>
+        <td>0.30</td>
+        <td>100</td>
+      </tr>
+      <tr class="green-row">
+        <td>Polkadot</td>
+        <td>Compra</td>
+        <td>25.00</td>
+        <td>300</td>
+      </tr>
+      <tr class="green-row">
+        <td>Solana</td>
+        <td>Venta</td>
+        <td>100</td>
+        <td>200</td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>
