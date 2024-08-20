@@ -35,7 +35,6 @@ export class criptoModel {
     }
 
     static crearOperacion( operacion ) {
-        console.log(operacion);
 
         criptos.push(operacion)
 
