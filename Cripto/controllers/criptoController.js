@@ -23,7 +23,6 @@ export class criptoController {
 
     static async crearOperacion(req, res) {
 
-        // Todo -  Se debería validar que req.body sea valido para crear una operacion
 
         const validacion = validarOperacion(req.body)
 
