@@ -9,10 +9,8 @@ fs.readFile(JSONpath, 'utf8', async (err, data) => {
         console.error('Error al leer el archivo:', err);
         return;
     }
-    try {
-        
+    try {   
         criptos = await JSON.parse(data);
-        
     } catch (err) {
         console.error('Error al parsear el JSON:', err);
     }
@@ -35,11 +33,20 @@ export class criptoModel {
     }
 
     static crearOperacion( operacion ) {
-
         criptos.push(operacion)
-
-        return operacion
         
+        const data = JSON.stringify(criptos)
+
+        console.log(data);
+        
+
+        fs.writeFile(JSONpath, data, err => {
+            if (err) {
+              console.error(err);
+            } 
+        });
+
+        return operacion   
     }
 
     static actualizarOperacion( id, data ) {
@@ -50,10 +57,6 @@ export class criptoModel {
             ...data
         }
 
-        return criptos[indice]
-        
+        return criptos[indice]        
     }
-
-
-  
 }

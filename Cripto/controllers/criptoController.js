@@ -22,8 +22,6 @@ export class criptoController {
     }
 
     static async crearOperacion(req, res) {
-
-
         const validacion = validarOperacion(req.body)
 
         if (!validacion.success){
