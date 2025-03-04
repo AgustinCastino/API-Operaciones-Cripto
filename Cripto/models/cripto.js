@@ -21,6 +21,10 @@ export class criptoModel {
     static getAll() {
         return criptos;
     }
+    static getFilteredCripto( cripto ){
+        const filteredCripto = criptos.filter((operacion) => operacion.cripto == cripto);
+        return filteredCripto;
+    }
 
     static getCompras() {
         const compras = criptos.filter((operacion) => operacion.tipo_operacion == 'compra');

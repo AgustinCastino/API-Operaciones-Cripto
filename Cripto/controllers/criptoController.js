@@ -7,7 +7,13 @@ export class criptoController {
     static async getAll(req, res) {
         const criptos = await criptoModel.getAll()
         res.json(criptos)
-        
+    }
+
+    static async getFilteredCripto(req, res){
+        const cripto = req.params.cripto 
+        const filteredCripto = await criptoModel.getFilteredCripto(cripto);
+
+        res.json(filteredCripto);
     }
 
     static async getCompras(req, res) {
@@ -18,7 +24,6 @@ export class criptoController {
     static async getVentas(req, res) {
         const ventas = await criptoModel.getVentas()
         res.json(ventas)
-
     }
 
     static async crearOperacion(req, res) {
@@ -47,7 +52,6 @@ export class criptoController {
         const operacionActualizada = await criptoModel.actualizarOperacion(id, validacion.data)
 
         res.json(operacionActualizada)
-
     }
 
     

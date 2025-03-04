@@ -1,6 +1,9 @@
 ### Recuperar todos las operaciones
 GET http://localhost:8080/criptos
 
+### Recuperar todos las operacionesfiltradas por Criptomoneda
+GET http://localhost:8080/criptos/BTC
+
 ### Recuperar todos las compras
 GET http://localhost:8080/criptos/compras
 
