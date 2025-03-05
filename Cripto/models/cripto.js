@@ -23,7 +23,36 @@ export class criptoModel {
     }
     static getFilteredCripto( cripto ){
         const filteredCripto = criptos.filter((operacion) => operacion.cripto == cripto);
-        return filteredCripto;
+        const promedioCompra = getPromedio(filteredCripto);
+
+        const resp = {
+            operaciones: filteredCripto,
+            promedioCompra
+        }
+
+        return resp;
+    }
+
+    // Función para calcula promedio de compra de una cripto
+    static getPromedio(filteredCripto){
+        
+        let cantidadCompras = 0;
+        let acumuladorCompras = 0;
+        let promedio = 0;
+
+        filteredCripto.forEach(operacion => {
+            
+            if( operacion.tipo_operacion == 'compra'){                
+                cantidadCompras++;
+                acumuladorCompras += operacion.cantidad_usdt;
+            }
+        });
+        
+        if ( cantidadCompras > 0){
+            promedio = acumuladorCompras / cantidadCompras;
+        }
+
+        return promedio || 0;
     }
 
     static getCompras() {

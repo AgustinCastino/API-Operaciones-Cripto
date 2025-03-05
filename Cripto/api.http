@@ -16,10 +16,10 @@ Content-Type: application/json
 
 {
   "tipo_operacion":"compra",
-  "cripto": "ETH",
+  "cripto": "BTC",
   "precio_usdt": 2500,
   "cantidad_cripto": 0.0054,
-  "cantidad_usdt": 100,
+  "cantidad_usdt": 1000,
   "fecha": "2020-01-01"
 }
 
