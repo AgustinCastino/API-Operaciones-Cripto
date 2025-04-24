@@ -5,53 +5,79 @@ import { validarOperacion, validarOperacionParcial} from "../schema/operacion.js
 export class criptoController {
 
     static async getAll(req, res) {
-        const criptos = await criptoModel.getAll()
-        res.json(criptos)
+        try{
+            const criptos = await criptoModel.getAll()
+            res.json(criptos)
+        }catch{
+            console.error('Error getAll', err)
+        }
     }
 
     static async getFilteredCripto(req, res){
-        const cripto = req.params.cripto 
-        const filteredCripto = await criptoModel.getFilteredCripto(cripto);
-
-        res.json(filteredCripto);
+        try{
+            const cripto = req.params.cripto 
+            const filteredCripto = await criptoModel.getFilteredCripto(cripto);
+        
+            res.json(filteredCripto);
+        }catch{
+            console.error('Error en getFilteredCripto', err)
+        }
+            
     }
 
     static async getCompras(req, res) {
-        const compras = await criptoModel.getCompras()
-        res.json(compras)
+        try{
+            const compras = await criptoModel.getCompras()
+            res.json(compras)
+        }catch{
+            console.error('Error en getCompras', err)
+        }
     }
 
     static async getVentas(req, res) {
-        const ventas = await criptoModel.getVentas()
-        res.json(ventas)
+        try{
+            const ventas = await criptoModel.getVentas()
+            res.json(ventas)
+        }catch{
+            console.error('Error getVentas', err);
+            
+        }
     }
 
     static async crearOperacion(req, res) {
-        const validacion = validarOperacion(req.body)
-
-        if (!validacion.success){
-            return res.status(400).json({ error: JSON.parse(validacion.error.message) })
+        try{
+            const validacion = validarOperacion(req.body)
+    
+            if (!validacion.success){
+                return res.status(400).json({ error: JSON.parse(validacion.error.message) })
+            }
+            
+            const operacionCreada = await criptoModel.crearOperacion(req.body)
+            
+            res.json(operacionCreada)
+        }catch{
+            console.error('Error crearOperacion', err);
         }
-        
-        const operacionCreada = await criptoModel.crearOperacion(req.body)
-        
-        res.json(operacionCreada)
 
     }
 
     static async actualizarOperacion(req, res) {
-
-        const id = req.params.id
-
-        const validacion = validarOperacionParcial(req.body)
-
-        if (!validacion.success){
-            return res.status(400).json({ error: JSON.parse(validacion.error.message) })
+        try{
+            const id = req.params.id
+    
+            const validacion = validarOperacionParcial(req.body)
+    
+            if (!validacion.success){
+                return res.status(400).json({ error: JSON.parse(validacion.error.message) })
+            }
+    
+            const operacionActualizada = await criptoModel.actualizarOperacion(id, validacion.data)
+    
+            res.json(operacionActualizada)
+        }catch{
+            console.error('Error actualizarOperacion', err);
+            
         }
-
-        const operacionActualizada = await criptoModel.actualizarOperacion(id, validacion.data)
-
-        res.json(operacionActualizada)
     }
 
     
