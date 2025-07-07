@@ -1,17 +1,17 @@
 ### Recuperar todos las operaciones
-GET http://localhost:8080/criptos
+GET http://localhost:8080/trades
 
 ### Recuperar todos las operacionesfiltradas por Criptomoneda
-GET http://localhost:8080/criptos/BTC
+GET http://localhost:8080/trades/BTC
 
 ### Recuperar todos las compras
-GET http://localhost:8080/criptos/compras
+GET http://localhost:8080/trades/compras
 
 ### Recuperar todos las ventas
-GET http://localhost:8080/criptos/ventas
+GET http://localhost:8080/trades/ventas
 
 ### Crear una operación de compra
-POST http://localhost:8080/criptos
+POST http://localhost:8080/trades
 Content-Type: application/json
 
 {
@@ -24,7 +24,7 @@ Content-Type: application/json
 }
 
 ### Actualizar operación mediante un ID
-PATCH http://localhost:8080/criptos/1
+PATCH http://localhost:8080/trades/1
 Content-Type: application/json
 
 {
