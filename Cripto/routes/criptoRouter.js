@@ -4,14 +4,11 @@ import { criptoController } from '../controllers/criptoController.js'
 
 export const criptoRouter = Router()
 
+// GET
 criptoRouter.get('/', criptoController.getAll)
-criptoRouter.get('/:cripto', criptoController.getFilteredCripto)
-criptoRouter.get('/compras', criptoController.getCompras)
-criptoRouter.get('/ventas', criptoController.getVentas)
 
+// POST
+criptoRouter.post('/', criptoController.newCripto)
 
-
-criptoRouter.post('/', criptoController.crearOperacion)
-
-
-criptoRouter.patch('/:id', criptoController.actualizarOperacion)
+// PATCH
+criptoRouter.patch('/:id', criptoController.updateCripto)
