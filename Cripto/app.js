@@ -1,11 +1,10 @@
 import express, { json } from 'express' // ES Modules
 import { criptoRouter } from './routes/criptoRouter.js'
-
-//const cors = require('cors');
+import { tradeRouter } from './routes/tradeRouter.js'
 import cors from 'cors';
 
-
 const app = express()
+
 // MiddleWare para juntar los datos de la req
 app.use(json()) // MiddleWare
 app.use(cors()); // Middleware
@@ -14,6 +13,7 @@ app.use(cors()); // Middleware
 app.disable('x-powered-by') 
 
 app.use('/criptos', criptoRouter)
+app.use('/trades', tradeRouter)
 
 const PORT = process.env.PORT ?? 8080
 
