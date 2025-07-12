@@ -1,4 +1,4 @@
-import { tradeModel } from "../models/trade.js"
+import { tradeService } from "../services/trade.js"
 import { validarOperacion, validarOperacionParcial} from "../schema/operacion.js"
 
 
@@ -6,7 +6,7 @@ export class tradeController {
 
     static async getAll(req, res) {
         try{
-            const criptos = await tradeModel.getAll()
+            const criptos = await tradeService.getAll()
             res.json(criptos)
         }catch{
             console.error('Error getAll', err)
@@ -16,7 +16,7 @@ export class tradeController {
     static async getFilteredCripto(req, res){
         try{
             const cripto = req.params.cripto 
-            const filteredCripto = await tradeModel.getFilteredCripto(cripto);
+            const filteredCripto = await tradeService.getFilteredCripto(cripto);
         
             res.json(filteredCripto);
         }catch(err){
@@ -28,7 +28,7 @@ export class tradeController {
     static async getCompras(req, res) {
         console.log("ok")
         try{
-            const compras = await tradeModel.getCompras()
+            const compras = await tradeService.getCompras()
             res.json(compras)
         }catch{
             console.error('Error en getCompras', err)
@@ -37,7 +37,7 @@ export class tradeController {
 
     static async getVentas(req, res) {
         try{
-            const ventas = await tradeModel.getVentas()
+            const ventas = await tradeService.getVentas()
             res.json(ventas)
         }catch{
             console.error('Error getVentas', err);
@@ -53,7 +53,7 @@ export class tradeController {
                 return res.status(400).json({ error: JSON.parse(validacion.error.message) })
             }
             
-            const operacionCreada = await tradeModel.newTrade(req.body)
+            const operacionCreada = await tradeService.newTrade(req.body)
             
             res.json(operacionCreada)
         }catch{
@@ -72,7 +72,7 @@ export class tradeController {
                 return res.status(400).json({ error: JSON.parse(validacion.error.message) })
             }
     
-            const operacionActualizada = await tradeModel.updateTrade(id, validacion.data)
+            const operacionActualizada = await tradeService.updateTrade(id, validacion.data)
     
             res.json(operacionActualizada)
         }catch{
