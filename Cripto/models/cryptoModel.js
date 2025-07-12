@@ -1,17 +1,26 @@
-const pool = require('../mysql')
+import {pool} from '../mysql.js'
 
-const newCrypto = async (crypto) =>{
+export const newCrypto = async (crypto) =>{
 
+  console.log('Entra a la query');
+
+  try{
     const {name, shortname, price, lastUpdate} = crypto
     const sql = `
-        INSERT INTO cryptos (name, shortname, price, lastUpdate)
-        VALUES (?, ?, ?, ?)
+      INSERT INTO cryptos (name, short_name, price)
+      VALUES (?, ?, ?)
     `;
+  
+    await pool.query(sql, [name, shortname, price]);
+  } catch(error){
+    console.error('Error al insertar crypto:', error.message);
+    console.error(error); // Mostramos todo el error
+  }
+  
 
-    await model.query(sql, [name, shortname, price, lastUpdate]);
 }
 
-const updateCrypto = async (cripto) => {
+export const updateCrypto = async (cripto) => {
   const { id, ...fields } = cripto;
 
   if (!id) throw new Error('Se requiere un id para actualizar');
