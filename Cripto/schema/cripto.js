@@ -3,8 +3,7 @@ import z from 'zod'
 const criptoSchema = z.object({
   name: z.string(),
   shortname: z.string().toUpperCase(),
-  price: z.number().positive(),
-  lastUpdate: z.date()
+  price: z.number().positive()
 })
 
 // El input debe tener todos los campos y esta función valida todos los campos del schema
