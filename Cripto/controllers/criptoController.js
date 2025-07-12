@@ -1,5 +1,5 @@
-import { criptoModel } from "../models/cripto.js"
-import { validarCripto, validarCriptoParcial} from "../schema/cripto.js"
+import { criptoService } from "../services/criptoService.js"
+import { validarCripto, validarCriptoParcial } from "../schema/cripto.js"
 
 
 export class criptoController {
@@ -8,30 +8,21 @@ export class criptoController {
         return null
     }
 
-    static async newCripto(req, res) {
-        cripto = req.body
-        cripto = {
-            ...req.body,
-            lastUpdate: new Date()
-        }
+    static async newCrypto(req, res) {
+        const crypto = req.body
 
-        try{
-            const validatedCripto = validarCripto(cripto)
-            if (!validatedCripto.success){
-                return res.status(400).json({ error: JSON.parse(validacion.error.message) })
-            }
-            const newCripto = await criptoModel.newCripto(cripto)
-            
-            res.json(newCripto)
-        }catch{
-            console.error('Error crearOperacion', err);
+        const result = await criptoService.newCrypto(crypto)
+
+        if (result.success) {
+            return res.status(200).json(result.data);
+        } else {
+            return res.status(400).json({ error: 'Algo salió mal' });
         }
+    }
+
+    static async updateCrypto(req, res) {
 
     }
 
-    static async updateCripto(req, res) {
-        
-    }
 
-    
 }
