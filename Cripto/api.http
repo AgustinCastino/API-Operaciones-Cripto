@@ -30,3 +30,13 @@ Content-Type: application/json
 {
   "cantidad_usdt": 2022
 }
+
+### Crear nuevo crypto
+POST http://localhost:8080/crypto
+Content-Type: application/json
+
+{
+  "name": "Bitcoin",
+  "shortname": "BTC",
+  "price":100000
+}
