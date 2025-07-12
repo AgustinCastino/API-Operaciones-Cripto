@@ -16,7 +16,7 @@ fs.readFile(JSONpath, 'utf8', async (err, data) => {
     }
 });
 
-export class tradeModel {
+export class tradeService {
 
     static getAll() {
         return trades;
