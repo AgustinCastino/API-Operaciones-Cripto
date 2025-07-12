@@ -8,7 +8,7 @@ export const criptoRouter = Router()
 criptoRouter.get('/', criptoController.getAll)
 
 // POST
-criptoRouter.post('/', criptoController.newCripto)
+criptoRouter.post('/', criptoController.newCrypto)
 
 // PATCH
-criptoRouter.patch('/:id', criptoController.updateCripto)
+criptoRouter.patch('/:id', criptoController.updateCrypto)
