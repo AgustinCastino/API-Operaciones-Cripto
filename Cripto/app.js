@@ -12,7 +12,7 @@ app.use(cors()); // Middleware
 // Desactiva info de la cabecera
 app.disable('x-powered-by') 
 
-app.use('/criptos', criptoRouter)
+app.use('/crypto', criptoRouter)
 app.use('/trades', tradeRouter)
 
 const PORT = process.env.PORT ?? 8080
