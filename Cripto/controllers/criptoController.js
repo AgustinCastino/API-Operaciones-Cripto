@@ -1,11 +1,16 @@
 import { criptoService } from "../services/criptoService.js"
-import { validarCripto, validarCriptoParcial } from "../schema/cripto.js"
-
 
 export class criptoController {
 
     static async getAll(req, res) {
-        return null
+        let result = await criptoService.getAllCryptos()
+        
+        if (result.success) {
+            return res.status(200).json(result.data);
+        } else {
+            return res.status(400).json({ error: 'Algo salió mal' });
+        }
+
     }
 
     static async newCrypto(req, res) {
@@ -21,6 +26,17 @@ export class criptoController {
     }
 
     static async updateCrypto(req, res) {
+
+        const cryptoId = req.params.id;
+        const update = req.body
+
+        const result = await criptoService.updateCrypto(cryptoId, update)
+
+        if (result.success) {
+            return res.status(200).json(result.data);
+        } else {
+            return res.status(400).json({ error: 'Algo salió mal' });
+        }
 
     }
 

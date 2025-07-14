@@ -1,7 +1,17 @@
-import {newCrypto as newCrytoModel, updateCrypto as updateCryptoModel} from '../models/cryptoModel.js'
+import { cryptoModel} from '../models/cryptoModel.js'
 import { validarCripto, validarCriptoParcial } from "../schema/cripto.js"
 
 export class criptoService {
+
+    static async getAllCryptos(){
+        try {
+            const res = await cryptoModel.getAllCryptos();
+            let cryptos = res[0];
+            return { success: true, data: cryptos };
+        } catch (error) {
+            return {success: false, error };
+        }
+    }
 
     static async newCrypto(crypto) {  
         crypto.shortname =  crypto.shortname.toUpperCase()
@@ -11,19 +21,32 @@ export class criptoService {
             return {success:false, error:JSON.parse(validatedCrypto.error.message)}
         }
 
-        await newCrytoModel(crypto)
-
-        return {success:true, data:crypto}
+        try {
+            await cryptoModel.newCrypto(crypto)
+            return { success: true, data: crypto };
+        } catch (error) {
+            return { success: false, error };
+        }
     }
 
-    static updateCrypto( id, data ) {
-        const indice = criptos.findIndex((operacion) => operacion.id == id);
-
-        criptos[indice] = {
-            ...criptos[indice],
-            ...data
+    static async updateCrypto( id, data ) {
+        const validatedCryptoUpdate = validarCriptoParcial(data)
+        if (!validatedCryptoUpdate.success) {
+            return {success:false, error:JSON.parse(validatedCryptoUpdate.error.message)}
         }
 
-        return criptos[indice]        
+        let crypto = await cryptoModel.getCryptoById(id)
+        crypto = crypto[0]
+
+        if(!crypto){
+            return {success:false, error: 'Crypto not found'}
+        }
+
+        try {
+            const res = await cryptoModel.updateCrypto(id, data)
+            return { success: true, data };
+        } catch (error) {
+            return {success: false, error };
+        }       
     }
 }
