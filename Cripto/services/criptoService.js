@@ -38,7 +38,7 @@ export class criptoService {
         let crypto = await cryptoModel.getCryptoById(id)
         crypto = crypto[0]
 
-        if(!crypto){
+        if(crypto.length == 0){
             return {success:false, error: 'Crypto not found'}
         }
 
@@ -48,5 +48,23 @@ export class criptoService {
         } catch (error) {
             return {success: false, error };
         }       
+    }
+
+    static async deleteCrypto(id){
+        let crypto = await cryptoModel.getCryptoById(id)
+        console.log(crypto);
+        
+        crypto = crypto[0]
+
+        if(crypto.length == 0){
+            return {success:false, error: 'Crypto not found'}
+        }
+
+        try {
+            const res = await cryptoModel.deleteCrypto(id)
+            return { success: true, data: crypto };
+        } catch (error) {
+            return {success: false, error };
+        }  
     }
 }

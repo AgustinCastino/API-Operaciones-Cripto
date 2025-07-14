@@ -16,9 +16,8 @@ export class cryptoModel {
   }
 
   static async getCryptoById(id){
+    const sql = `SELECT * FROM cryptos WHERE id = ?`
     try{
-      const sql = `SELECT * FROM cryptos WHERE id = ?`
-
       const result = await pool.query(sql, id);
       return result
     } catch(error){
@@ -65,6 +64,19 @@ export class cryptoModel {
     }
   
   };
+
+  static async deleteCrypto(id){
+    const sql = `DELETE FROM cryptos WHERE id = ?`
+
+    try{
+      const result = await pool.query(sql, id);
+      return result
+    } catch(error){
+      console.error('Error al obtener cryptos:', error.message);
+      console.error(error);
+    }
+
+  }
 }
 
 

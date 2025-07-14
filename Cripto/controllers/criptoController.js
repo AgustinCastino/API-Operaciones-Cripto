@@ -8,7 +8,7 @@ export class criptoController {
         if (result.success) {
             return res.status(200).json(result.data);
         } else {
-            return res.status(400).json({ error: 'Algo salió mal' });
+            return res.status(400).json({ error: result.error });
         }
 
     }
@@ -21,7 +21,7 @@ export class criptoController {
         if (result.success) {
             return res.status(200).json(result.data);
         } else {
-            return res.status(400).json({ error: 'Algo salió mal' });
+            return res.status(400).json({ error: result.error });
         }
     }
 
@@ -35,7 +35,20 @@ export class criptoController {
         if (result.success) {
             return res.status(200).json(result.data);
         } else {
-            return res.status(400).json({ error: 'Algo salió mal' });
+            return res.status(400).json({ error: result.error });
+        }
+
+    }
+
+    static async deleteCrypto(req, res){
+        const cryptoId = req.params.id;
+
+        const result = await criptoService.deleteCrypto(cryptoId)
+
+        if (result.success) {
+            return res.status(200).json(result.data);
+        } else {
+            return res.status(400).json({ error: result.error });
         }
 
     }
