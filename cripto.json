@@ -1,0 +1,36 @@
+[
+    {
+        "id": 1,
+        "tipo_operacion": "compra",
+        "cripto": "BTC",
+        "precio_usdt": 55000,
+        "cantidad_cripto": 0.0054,
+        "cantidad_usdt": 1000,
+        "fecha": "11/08/2024"
+    },
+    {
+        "id": 2,
+        "tipo_operacion": "compra",
+        "cripto": "BTC",
+        "precio_usdt": 58000,
+        "cantidad_cripto": 0.0054,
+        "cantidad_usdt": 2000,
+        "fecha": "11/08/2024"
+    },
+    {
+        "tipo_operacion": "compra",
+        "cripto": "ETH",
+        "precio_usdt": 2500,
+        "cantidad_cripto": 0.0054,
+        "cantidad_usdt": 1000,
+        "fecha": "2020-01-01"
+    },
+    {
+        "tipo_operacion": "compra",
+        "cripto": "BTC",
+        "precio_usdt": 2500,
+        "cantidad_cripto": 0.0054,
+        "cantidad_usdt": 1000,
+        "fecha": "2020-01-01"
+    }
+]
