@@ -1,17 +1,18 @@
 import { Router } from 'express'
 import { tradeController } from '../controllers/tradeController.js'
+import { authMiddleware } from '../middlewares/authMiddleware.js'
 
 
 export const tradeRouter = Router()
 
 // GET
-tradeRouter.get('/', tradeController.getAll)
+tradeRouter.get('/', authMiddleware,tradeController.getAll)
 
 // POST
-tradeRouter.post('/', tradeController.newTrade)
+tradeRouter.post('/', authMiddleware,tradeController.newTrade)
 
 // PATCH
-tradeRouter.patch('/:id', tradeController.updateTrade)
+tradeRouter.patch('/:id', authMiddleware,tradeController.updateTrade)
 
 // DELETE
-tradeRouter.delete(':id', tradeController.deleteTrade)
+tradeRouter.delete(':id', authMiddleware,tradeController.deleteTrade)
