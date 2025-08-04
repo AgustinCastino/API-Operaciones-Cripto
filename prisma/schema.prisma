@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Users{
+  id Int @id @default(autoincrement())
+  name String
+  surname String
+  user_name String
+  email String
+  password String
+  trades Trades[]
+}
+
+model Cryptos {
+  id Int @id
+  name String
+  short_name String
+  price String
+  last_update DateTime @default(now()) @updatedAt
+  trades Trades[]
+}
+
+model Trades {
+  id Int @id
+  
+  user_id Int 
+  user Users @relation(fields:[user_id], references:[id])
+  crypto_id Int
+  crypto Cryptos @relation(fields: [crypto_id], references: [id])
+
+  trade_type String
+  crypto_amount Decimal @db.Decimal(18, 8)   
+  usdt_amount Decimal @db.Decimal(18, 8) 
+  unit_price Decimal @db.Decimal(18, 8)   
+  trade_date DateTime @default(now())
+}
+
+
