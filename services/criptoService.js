@@ -1,72 +1,80 @@
-import { cryptoModel} from '../models/cryptoModel.js'
+import { PrismaClient } from '@prisma/client'
 import { validarCripto, validarCriptoParcial } from "../schema/cripto.js"
+
+const prisma = new PrismaClient()
 
 export class criptoService {
 
-    static async getAllCryptos(){
+    static async getAllCryptos() {
         try {
-            const res = await cryptoModel.getAllCryptos();
-            let cryptos = res[0];
+            const cryptos = await prisma.cryptos.findMany()
             return { success: true, data: cryptos };
         } catch (error) {
-            return {success: false, error };
+            return { success: false, error };
         }
     }
 
-    static async newCrypto(crypto) {  
-        crypto.shortname =  crypto.shortname.toUpperCase()
+    static async newCrypto(crypto) {
+        crypto.shortname = crypto.shortname.toUpperCase()
 
         const validatedCrypto = validarCripto(crypto)
         if (!validatedCrypto.success) {
-            return {success:false, error:JSON.parse(validatedCrypto.error.message)}
+            return { success: false, error: JSON.parse(validatedCrypto.error.message) }
         }
 
         try {
-            await cryptoModel.newCrypto(crypto)
+            await prisma.cryptos.create({
+                name: crypto.name,
+                short_name: crypto.shortname,
+                price: crypto.price
+            })
+
             return { success: true, data: crypto };
         } catch (error) {
             return { success: false, error };
         }
     }
 
-    static async updateCrypto( id, data ) {
+    static async updateCrypto(id, data) {
         const validatedCryptoUpdate = validarCriptoParcial(data)
         if (!validatedCryptoUpdate.success) {
-            return {success:false, error:JSON.parse(validatedCryptoUpdate.error.message)}
-        }
-
-        let crypto = await cryptoModel.getCryptoById(id)
-        console.log(crypto);
-        
-        crypto = crypto[0]
-
-        if(crypto.length == 0){
-            return {success:false, error: 'Crypto not found'}
+            return { success: false, error: JSON.parse(validatedCryptoUpdate.error.message) }
         }
 
         try {
-            const res = await cryptoModel.updateCrypto(id, data)
+            await prisma.cryptos.update({
+                where:{
+                    id:id
+                },
+                data:data
+            })
             return { success: true, data };
         } catch (error) {
-            return {success: false, error };
-        }       
+            return { success: false, error };
+        }
     }
 
-    static async deleteCrypto(id){
-        let crypto = await cryptoModel.getCryptoById(id)
-        console.log(crypto);
-        
-        crypto = crypto[0]
+    static async deleteCrypto(id) {
+        const crypto = await prisma.cryptos.findFirst({
+            where: {
+                id: id
+            }
+        })
 
-        if(crypto.length == 0){
-            return {success:false, error: 'Crypto not found'}
+        if (!crypto) {
+            return { success: false, error: 'Crypto not found' }
         }
 
         try {
-            const res = await cryptoModel.deleteCrypto(id)
+            await prisma.cryptos.delete({
+                where: {
+                    id: id
+                }
+            })
+
             return { success: true, data: crypto };
         } catch (error) {
-            return {success: false, error };
-        }  
+            return { success: false, error };
+        }
     }
 }
