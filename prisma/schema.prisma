@@ -24,16 +24,16 @@ model Users{
 }
 
 model Cryptos {
-  id Int @id
+  id Int @id @default(autoincrement())
   name String
   short_name String
-  price String
+  price Int
   last_update DateTime @default(now()) @updatedAt
   trades Trades[]
 }
 
 model Trades {
-  id Int @id
+  id Int @id @default(autoincrement())
   
   user_id Int 
   user Users @relation(fields:[user_id], references:[id])
