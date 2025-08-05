@@ -1,4 +1,3 @@
-import { tradeModel } from '../models/tradeModel.js'
 import { validarTrade, validarTradeParcial } from "../schema/trade.js"
 import { PrismaClient } from '@prisma/client'
 
@@ -27,23 +26,23 @@ export class tradeService {
 
         try {
             const tradeCreated = await prisma.trades.create({
-            data:{
-                trade_type: newTrade.trade_type,
-                crypto_amount :newTrade.crypto_amount,
-                usdt_amount: newTrade.usdt_amount,
-                unit_price:newTrade.unit_price,
-                user:{
-                    connect: {
-                        id:newTrade.user_id
-                    }
-                },
-                crypto:{
-                    connect: {
-                        id:newTrade.crypto_id
+                data: {
+                    trade_type: newTrade.trade_type,
+                    crypto_amount: newTrade.crypto_amount,
+                    usdt_amount: newTrade.usdt_amount,
+                    unit_price: newTrade.unit_price,
+                    user: {
+                        connect: {
+                            id: newTrade.user_id
+                        }
+                    },
+                    crypto: {
+                        connect: {
+                            id: newTrade.crypto_id
+                        }
                     }
                 }
-            }
-        })
+            })
             return { success: true, data: tradeCreated };
         } catch (error) {
             return { success: false, error };
@@ -57,15 +56,13 @@ export class tradeService {
             return { success: false, error: JSON.parse(validatedTradeUpdate.error.message) }
         }
 
-        let trade = await tradeModel.getTradeById(id)
-        trade = trade[0]
-
-        if (trade.length == 0) {
-            return { success: false, error: 'Trade not found' }
-        }
-
         try {
-            const res = await tradeModel.updateTrade(id, data)
+            await prisma.trades.update({
+                where: {
+                    id: id
+                },
+                data: data
+            })
             return { success: true, data };
         } catch (error) {
             return { success: false, error };

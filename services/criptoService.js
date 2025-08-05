@@ -22,15 +22,23 @@ export class criptoService {
             return { success: false, error: JSON.parse(validatedCrypto.error.message) }
         }
 
+        console.log('Entra');
+        console.log(crypto);
+
         try {
             await prisma.cryptos.create({
-                name: crypto.name,
-                short_name: crypto.shortname,
-                price: crypto.price
+                data:{
+                    id:1,
+                    name: crypto.name,
+                    short_name: crypto.shortname,
+                    price: crypto.price
+                }
             })
 
             return { success: true, data: crypto };
         } catch (error) {
+            console.log(error);
+            
             return { success: false, error };
         }
     }
@@ -41,15 +49,19 @@ export class criptoService {
             return { success: false, error: JSON.parse(validatedCryptoUpdate.error.message) }
         }
 
+
         try {
+            id = Number(id)
             await prisma.cryptos.update({
                 where:{
-                    id:id
+                    id: id
                 },
                 data:data
             })
             return { success: true, data };
         } catch (error) {
+            console.log(error);
+            
             return { success: false, error };
         }
     }
