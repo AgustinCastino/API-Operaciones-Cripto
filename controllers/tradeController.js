@@ -1,28 +1,24 @@
 import { tradeService } from "../services/tradeService.js"
-
+import { TradeValidation } from "../Errors/tradeErrors.js"
+import { DbError } from '../Errors/dbErrors.js'
 
 
 export class tradeController {
 
     static async getAll(req, res) {
-        let result = await tradeService.getAllTrades()
+        const trades = await tradeService.getAllTrades()
+        return res.status(200).json(trades);
 
-        if (result.success) {
-            return res.status(200).json(result.data);
-        } else {
-            return res.status(400).json({ error: result.error });
-        }
     }
 
     static async newTrade(req, res) {
         const trade = req.body
 
-        const result = await tradeService.newTrade(trade)
-
-        if (result.success) {
+        try {
+            await tradeService.newTrade(trade)
             return res.status(200).json(result.data);
-        } else {
-            return res.status(400).json({ error: result.error });
+        } catch (e) {
+            return this.handleError(res, e)
         }
 
     }
@@ -31,26 +27,37 @@ export class tradeController {
         const tradeId = req.params.id;
         const update = req.body
 
-        const result = await tradeService.updateTrade(tradeId, update)
+        try {
+            await tradeService.updateTrade(tradeId, update)
+            return res.status(200).json(update)
 
-        if (result.success) {
-            return res.status(200).json(result.data);
-        } else {
-            return res.status(400).json({ error: result.error });
+        } catch (e) {
+            return this.handleError(res, e)
         }
     }
 
     static async deleteTrade(req, res) {
         const tradeId = req.params.id;
 
-        const result = await criptoService.deleteTrade(tradeId)
+        try {
+            const tradeDeleted = await criptoService.deleteTrade(tradeId)
+            return res.status(200).json(tradeDeleted);
+        } catch (e) {
+            return this.handleError(res, e)
+        }
+    }
 
-        if (result.success) {
-            return res.status(200).json(result.data);
-        } else {
-            return res.status(400).json({ error: result.error });
+    static handleError(res, error) {
+        if (error instanceof TradeValidation) {
+            return res.status(400).json({ error: error.message })
         }
 
+        if (error instanceof DbError) {
+            return res.status(500).json({ error: error.message })
+        }
+
+        console.error('Error inesperado:', error)
+        return res.status(500).json({ error: 'Error interno del servidor' })
     }
 
 
