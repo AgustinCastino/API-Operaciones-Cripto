@@ -1,17 +1,14 @@
 import { PrismaClient } from '@prisma/client'
+import { CryptoValidation } from '../Errors/cryptoErrors.js'
 import { validarCripto, validarCriptoParcial } from "../schema/cripto.js"
+import { DbError } from '../Errors/dbErrors.js'
 
 const prisma = new PrismaClient()
 
 export class criptoService {
 
     static async getAllCryptos() {
-        try {
-            const cryptos = await prisma.cryptos.findMany()
-            return { success: true, data: cryptos };
-        } catch (error) {
-            return { success: false, error };
-        }
+        return await prisma.cryptos.findMany()
     }
 
     static async newCrypto(crypto) {
@@ -19,16 +16,12 @@ export class criptoService {
 
         const validatedCrypto = validarCripto(crypto)
         if (!validatedCrypto.success) {
-            return { success: false, error: JSON.parse(validatedCrypto.error.message) }
+            throw new CryptoValidation(validatedCrypto.error.message)
         }
-
-        console.log('Entra');
-        console.log(crypto);
 
         try {
             await prisma.cryptos.create({
                 data:{
-                    id:1,
                     name: crypto.name,
                     short_name: crypto.shortname,
                     price: crypto.price
@@ -36,37 +29,34 @@ export class criptoService {
             })
 
             return { success: true, data: crypto };
-        } catch (error) {
-            console.log(error);
-            
-            return { success: false, error };
+        } catch (error) {            
+            throw new DbError(error)
         }
     }
 
     static async updateCrypto(id, data) {
         const validatedCryptoUpdate = validarCriptoParcial(data)
         if (!validatedCryptoUpdate.success) {
-            return { success: false, error: JSON.parse(validatedCryptoUpdate.error.message) }
+            throw new CryptoValidation(validatedCryptoUpdate.error.message)
         }
 
+        id = Number(id)
 
         try {
-            id = Number(id)
             await prisma.cryptos.update({
                 where:{
                     id: id
                 },
                 data:data
             })
-            return { success: true, data };
+            return data ;
         } catch (error) {
-            console.log(error);
-            
-            return { success: false, error };
+            throw new DbError(error)
         }
     }
 
     static async deleteCrypto(id) {
+        id = Number(id)
         const crypto = await prisma.cryptos.findFirst({
             where: {
                 id: id
@@ -74,7 +64,7 @@ export class criptoService {
         })
 
         if (!crypto) {
-            return { success: false, error: 'Crypto not found' }
+            throw new CryptoValidation('Crypto no encontrada')
         }
 
         try {
@@ -84,9 +74,9 @@ export class criptoService {
                 }
             })
 
-            return { success: true, data: crypto };
+            return crypto
         } catch (error) {
-            return { success: false, error };
+            throw new DbError(error)
         }
     }
 }

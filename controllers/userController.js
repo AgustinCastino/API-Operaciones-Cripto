@@ -1,31 +1,50 @@
 import { userService } from '../services/userService.js'
+import { AuthError, RegisterError } from "../Errors/userErros.js"
+import { DbError } from '../Errors/dbErrors.js'
 
 export class userController {
     static async login(req, res) {
 
         const user = req.body
 
-        const result = await userService.loginUser(user)
+        try{
+            await userService.loginUser(user)
+            return res.status(200).json(user);
 
-        if (result.success) {
-            return res.status(200).json(result.data);
-        } else {
-            return res.status(401).json({ error: result.error });
+        }catch(e){
+            return this.handleError(res,e)
         }
 
     }
 
     static async register(req, res) {
-        const newUser = req.body
+        let newUser = req.body
 
-        const result = await userService.newUser(newUser)
+        try{
+            newUser = await userService.newUser(newUser)
+            return res.status(200).json(newUser);
 
-        if (result.success) {
-            return res.status(200).json(result.data);
-        } else {
-            return res.status(400).json({ error: result.error });
+        }catch(e){
+            return this.handleError(res,e)
         }
 
+    }
+
+    static handleError(res, error) {
+        if (error instanceof AuthError) {
+            return res.status(400).json({ error: error.message })
+        }
+
+        if (error instanceof RegisterError) {
+            return res.status(409).json({ error: error.message })
+        }
+
+        if (error instanceof DbError) {
+            return res.status(500).json({ error: error.message })
+        }
+
+        console.error('Error inesperado:', error)
+        return res.status(500).json({ error: 'Error interno del servidor' })
     }
 
 

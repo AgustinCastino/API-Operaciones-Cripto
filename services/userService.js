@@ -1,4 +1,5 @@
 import { validateNewUser, validateUserLogIn } from "../schema/userSchema.js"
+import { AuthError, RegisterError } from "../Errors/userErros.js"
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
@@ -6,14 +7,13 @@ import dotenv from 'dotenv';
 
 dotenv.config(); 
 const prisma = new PrismaClient()
+
 export class userService {
-
-
     static async newUser(newUser) {
 
         const validatedNewUser = validateNewUser(newUser)
         if (!validatedNewUser.success) {
-            return { success: false, error: JSON.parse(validatedNewUser.error.message) }
+            throw new RegisterError(validatedNewUser.error.message);
         }
 
         const user = await prisma.users.findFirst({
@@ -27,9 +27,9 @@ export class userService {
 
         if (user){
             if(newUser.username == user.user_name){
-                throw new Error("Username no disponible");
+                throw new RegisterError("Username no disponible");
             }else{
-                throw new Error("Email no disponible");
+                throw new RegisterError("Email no disponible");
             }
         }
 
@@ -45,7 +45,12 @@ export class userService {
             }
         })
 
-        return ({success:true, username: newUser.username})
+        return (
+            {   name: newUser.name,
+                email: newUser.email,
+                username: newUser.username
+            }
+        )
     }
 
     static async loginUser({ username, password }) {
@@ -55,12 +60,12 @@ export class userService {
             }
         })
         if (!user) {
-            throw new Error("No se encontró el nombre de usuario");
+            throw new AuthError("Credenciales Incorrectas");
         }
 
         const validPassword = await bcrypt.compare(password, user.password)
 
-        if (!validPassword) throw new Error("Invalid Password");
+        if (!validPassword) throw new AuthError("Credenciales Incorrectas");
 
         const token = jwt.sign(
             { username, password },
@@ -73,7 +78,7 @@ export class userService {
             token
         }
 
-        return { success: true, data: userReponse }
+        return userReponse
     }
 
 

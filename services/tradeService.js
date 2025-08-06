@@ -1,18 +1,14 @@
+import { TradeValidation } from "../Errors/tradeErrors.js"
 import { validarTrade, validarTradeParcial } from "../schema/trade.js"
 import { PrismaClient } from '@prisma/client'
+import { DbError } from '../Errors/dbErrors.js'
 
 const prisma = new PrismaClient()
 
 export class tradeService {
 
     static async getAllTrades() {
-        try {
-            const res = await prisma.trades.findMany()
-            let trades = res[0];
-            return { success: true, data: trades };
-        } catch (error) {
-            return { success: false, error };
-        }
+        return await prisma.trades.findMany()
     }
 
     static async newTrade(newTrade) {
@@ -21,7 +17,7 @@ export class tradeService {
 
         const validatedTrade = validarTrade(newTrade)
         if (!validatedTrade.success) {
-            return { success: false, error: JSON.parse(validatedTrade.error.message) }
+            throw new TradeValidation(validatedTrade.error.message)
         }
 
         try {
@@ -43,9 +39,9 @@ export class tradeService {
                     }
                 }
             })
-            return { success: true, data: tradeCreated };
+            return tradeCreated;
         } catch (error) {
-            return { success: false, error };
+            throw new DbError(error)
         }
 
     }
@@ -53,7 +49,7 @@ export class tradeService {
     static async updateTrade(id, data) {
         const validatedTradeUpdate = validarTradeParcial(data)
         if (!validatedTradeUpdate.success) {
-            return { success: false, error: JSON.parse(validatedTradeUpdate.error.message) }
+            throw new TradeValidation(validatedTradeUpdate.error.message)
         }
 
         try {
@@ -63,9 +59,9 @@ export class tradeService {
                 },
                 data: data
             })
-            return { success: true, data };
+            return data;
         } catch (error) {
-            return { success: false, error };
+            throw new DbError(error)
         }
     }
 
@@ -78,7 +74,7 @@ export class tradeService {
         })
 
         if (!trade) {
-            return { success: false, error: 'Trade not found' }
+            throw new TradeValidation('Trade no encontrado')
         }
 
         try {
@@ -87,9 +83,9 @@ export class tradeService {
                     id: id
                 }
             })
-            return { success: true, data: trade };
+            return trade
         } catch (error) {
-            return { success: false, error };
+            throw new DbError(error)
         }
     }
 
