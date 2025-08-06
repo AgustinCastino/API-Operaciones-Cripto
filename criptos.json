@@ -1,9 +1,0 @@
-[
-    {
-        "id": 1,
-        "name": "Bitcoin",
-        "shortname": "BTC",
-        "price": 100000,
-        "lastUpdate": "Today"
-    }
-]
