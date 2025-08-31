@@ -18,7 +18,7 @@ export class tradeController {
             await tradeService.newTrade(trade)
             return res.status(200).json(result.data);
         } catch (e) {
-            return this.handleError(res, e)
+            return tradeController.handleError(res, e)
         }
 
     }
@@ -32,7 +32,7 @@ export class tradeController {
             return res.status(200).json(update)
 
         } catch (e) {
-            return this.handleError(res, e)
+            return tradeController.handleError(res, e)
         }
     }
 
@@ -43,7 +43,7 @@ export class tradeController {
             const tradeDeleted = await criptoService.deleteTrade(tradeId)
             return res.status(200).json(tradeDeleted);
         } catch (e) {
-            return this.handleError(res, e)
+            return tradeController.handleError(res, e)
         }
     }
 

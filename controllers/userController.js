@@ -8,11 +8,11 @@ export class userController {
         const user = req.body
 
         try{
-            await userService.loginUser(user)
-            return res.status(200).json(user);
+            const userResponse = await userService.loginUser(user)
+            return res.status(200).json(userResponse);
 
         }catch(e){
-            return this.handleError(res,e)
+            return userController.handleError(res,e)
         }
 
     }
@@ -25,12 +25,14 @@ export class userController {
             return res.status(200).json(newUser);
 
         }catch(e){
-            return this.handleError(res,e)
+            return userController.handleError(res,e)
         }
 
     }
 
     static handleError(res, error) {
+        console.log('Entra en handleError');
+
         if (error instanceof AuthError) {
             return res.status(400).json({ error: error.message })
         }

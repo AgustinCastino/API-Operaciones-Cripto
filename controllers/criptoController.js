@@ -16,7 +16,7 @@ export class criptoController {
             await criptoService.newCrypto(crypto)
             return res.status(200).json(crypto)
         } catch (e) {
-            return this.handleError(res, e)
+            return criptoController.handleError(res, e)
         }
     }
 
@@ -29,7 +29,7 @@ export class criptoController {
             await criptoService.updateCrypto(cryptoId, update)
             return res.status(200).json(update);
         }catch(e){
-            return this.handleError(res, e)
+            return criptoController.handleError(res, e)
 
         }
     }
@@ -41,7 +41,7 @@ export class criptoController {
             const cryptoDeleted = await criptoService.deleteCrypto(cryptoId)
             return res.status(200).json(cryptoDeleted)
         }catch(e){
-            return this.handleError(res, e)
+            return criptoController.handleError(res, e)
         }
 
     }

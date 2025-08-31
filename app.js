@@ -1,8 +1,11 @@
 import express, { json } from 'express' // ES Modules
+import dotenv from 'dotenv';
 import { criptoRouter } from './routes/criptoRouter.js'
 import { tradeRouter } from './routes/tradeRouter.js'
 import { userRouter } from './routes/userRouter.js'
 import cors from 'cors';
+
+dotenv.config(); 
 
 const app = express()
 
