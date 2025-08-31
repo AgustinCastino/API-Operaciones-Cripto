@@ -40,7 +40,7 @@ app.js            # Punto de entrada de la aplicación
 
 1. **Clona el repositorio**  
    ```sh
-   git clone https://github.com/tuusuario/API-Operaciones-Cripto.git
+   git clone https://github.com/AgustinCastino/API-Operaciones-Cripto.git
    cd API-Operaciones-Cripto
    ```
 
