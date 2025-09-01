@@ -1,7 +1,5 @@
 import { tradeService } from "../services/tradeService.js"
-import { TradeValidation } from "../Errors/tradeErrors.js"
-import { DbError } from '../Errors/dbErrors.js'
-
+import { handleError } from '../utils/handleError.js'
 
 export class tradeController {
 
@@ -18,7 +16,7 @@ export class tradeController {
             await tradeService.newTrade(trade)
             return res.status(200).json(result.data);
         } catch (e) {
-            return tradeController.handleError(res, e)
+            return handleError(res, e)
         }
 
     }
@@ -32,7 +30,7 @@ export class tradeController {
             return res.status(200).json(update)
 
         } catch (e) {
-            return tradeController.handleError(res, e)
+            return handleError(res, e)
         }
     }
 
@@ -43,22 +41,7 @@ export class tradeController {
             const tradeDeleted = await criptoService.deleteTrade(tradeId)
             return res.status(200).json(tradeDeleted);
         } catch (e) {
-            return tradeController.handleError(res, e)
+            return handleError(res, e)
         }
     }
-
-    static handleError(res, error) {
-        if (error instanceof TradeValidation) {
-            return res.status(400).json({ error: error.message })
-        }
-
-        if (error instanceof DbError) {
-            return res.status(500).json({ error: error.message })
-        }
-
-        console.error('Error inesperado:', error)
-        return res.status(500).json({ error: 'Error interno del servidor' })
-    }
-
-
 }

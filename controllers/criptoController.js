@@ -1,6 +1,6 @@
 import { CryptoValidation } from "../Errors/cryptoErrors.js"
-import { criptoService } from "../services/criptoService.js"
-import { DbError } from '../Errors/dbErrors.js'
+import { handleError } from '../utils/handleError.js'
+
 
 export class criptoController {
 
@@ -16,7 +16,7 @@ export class criptoController {
             await criptoService.newCrypto(crypto)
             return res.status(200).json(crypto)
         } catch (e) {
-            return criptoController.handleError(res, e)
+            return handleError(res, e)
         }
     }
 
@@ -29,7 +29,7 @@ export class criptoController {
             await criptoService.updateCrypto(cryptoId, update)
             return res.status(200).json(update);
         }catch(e){
-            return criptoController.handleError(res, e)
+            return handleError(res, e)
 
         }
     }
@@ -41,23 +41,9 @@ export class criptoController {
             const cryptoDeleted = await criptoService.deleteCrypto(cryptoId)
             return res.status(200).json(cryptoDeleted)
         }catch(e){
-            return criptoController.handleError(res, e)
+            return handleError(res, e)
         }
 
     }
-
-    static handleError(res, error) {
-        if (error instanceof CryptoValidation) {
-            return res.status(400).json({ error: error.message })
-        }
-
-        if (error instanceof DbError) {
-            return res.status(500).json({ error: error.message })
-        }
-
-        console.error('Error inesperado:', error)
-        return res.status(500).json({ error: 'Error interno del servidor' })
-    }
-
 
 }

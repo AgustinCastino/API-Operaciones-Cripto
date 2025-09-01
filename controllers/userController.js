@@ -1,6 +1,5 @@
 import { userService } from '../services/userService.js'
-import { AuthError, RegisterError } from "../Errors/userErros.js"
-import { DbError } from '../Errors/dbErrors.js'
+import { handleError } from '../utils/handleError.js'
 
 export class userController {
     static async login(req, res) {
@@ -12,7 +11,7 @@ export class userController {
             return res.status(200).json(userResponse);
 
         }catch(e){
-            return userController.handleError(res,e)
+            return handleError(res,e)
         }
 
     }
@@ -25,28 +24,9 @@ export class userController {
             return res.status(200).json(newUser);
 
         }catch(e){
-            return userController.handleError(res,e)
+            return handleError(res,e)
         }
 
-    }
-
-    static handleError(res, error) {
-        console.log('Entra en handleError');
-
-        if (error instanceof AuthError) {
-            return res.status(400).json({ error: error.message })
-        }
-
-        if (error instanceof RegisterError) {
-            return res.status(409).json({ error: error.message })
-        }
-
-        if (error instanceof DbError) {
-            return res.status(500).json({ error: error.message })
-        }
-
-        console.error('Error inesperado:', error)
-        return res.status(500).json({ error: 'Error interno del servidor' })
     }
 
 
